@@ -5,7 +5,8 @@
 - English version at the end of the page
 
 Para iniciar a construção desse projeto foi utiliazado:
-### Verifique se estão instalados em sua maquina local ou procure a versão mais atualizada
+Verifique se estão instalados em sua maquina local ou procure a versão mais atualizada
+
 - cv2(pip install opencv-python)
 - (...)
 
