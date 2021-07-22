@@ -58,7 +58,10 @@ while(True):
 
         # salva o print da camera com o retangulo vermelho e recorta a img
         roi = frame[y:y+width, x:x+height]
-        #cv2.imwrite(f'../Images Geteds/{USER_INP}}', roi)
+        #if cv2.waitKey(1) & 0xFF == ord('s'):
+        #    cv2.imshow('Rosto detectado', roi)
+        #    USER_INP = simpledialog.askstring(title="Savar reconhecimento facial",prompt="Informe um nome para salvar sua foto: (Ex: rosto_gabriel.png)")
+        #    cv2.imwrite(f'../Images Geteds/{USER_INP}', roi)
         
         #mostra a img contada no retangulo vermelho
         #imshow('Rosto detectado', roi)
@@ -75,9 +78,9 @@ while(True):
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
     #abre uma nova tela mostrando a img que pegou
-    if cv2.waitKey(1) & 0xFF == ord('s'):
-        cv2.imshow('Rosto detectado', roi)
-        USER_INP = simpledialog.askstring(title="Savar reconhecimento facial",prompt="Informe um nome para salvar sua foto: (Ex: rosto_gabriel.png)")
+    #if cv2.waitKey(1) & 0xFF == ord('s'):
+        #cv2.imshow('Rosto detectado', roi)
+        #USER_INP = simpledialog.askstring(title="Savar reconhecimento facial",prompt="Informe um nome para salvar sua foto: (Ex: rosto_gabriel.png)")
         #cv2.waitKey(0)
         #cv2.destroyAllWindows()
 
