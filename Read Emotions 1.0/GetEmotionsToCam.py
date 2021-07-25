@@ -21,7 +21,8 @@ expressoes = ["Raiva", "Nojo", "Medo", "Feliz", "Triste", "Surpreso", "Neutro"]
 #Carregamento dos modelos
 cascade_faces = "../Testing Faces/haarcascade_frontalface_default.xml"
 #caminho da rede neural pré treinada
-caminho_modelo = "../Testing Faces/modelo_01_expressoes.h5"
+#caminho_modelo = "../Testing Faces/Models/modelo_01_expressoes.h5"
+caminho_modelo = "../Testing Faces/Models/modelo_02_expressoes.h5"
 #objeto especifico para deteccao de faces
 face_detection = cv2.CascadeClassifier(cascade_faces)
 classificador_emocoes = load_model(caminho_modelo, compile = False)

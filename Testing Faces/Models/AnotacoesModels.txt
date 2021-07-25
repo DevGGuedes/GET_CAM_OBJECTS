@@ -1,0 +1,21 @@
+
+-------- modelo_01_expressoes.h5
+Acurácia  - 0.61
+Erro/Loss - 1.14
+
+-------- modelo_02_expressoes.h5
+Acurácia  - 0.64(63)
+Erro/Loss - 1.24
+
+-------- modelo_03_expressoes.h5
+Acurácia  - 0.63
+Erro/Loss - 1.19
+
+
+-------- modelo_06_expressoes.h5
+Acurácia  - 0.62
+Erro/Loss - 1.01
+
+-------- modelo_07_expressoes.h5
+Acurácia  - 0.62
+Erro/Loss - 1.04
