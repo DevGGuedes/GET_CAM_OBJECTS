@@ -32,6 +32,7 @@ while(True):
     ret, frame = video.read()
     frame = cv2.flip(frame,1)
     faces = face_detection.detectMultiScale(frame, scaleFactor = 1.2, minNeighbors = 5, minSize = (20,20))
+    #faces = face_detection.detectMultiScale(frame, scaleFactor = 1.5, minNeighbors = 7, minSize = (30,30))
 
     #transforma imagem original para escala de cinza
     frame_cinza = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)

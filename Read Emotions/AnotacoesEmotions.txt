@@ -1,0 +1,12 @@
+
+----------------- READ EMOTIONS
+Parte do projeto para processamentos e leituras de emoções usando webcam do PC
+
+
+
+Versões Iniciais na pasta 1.0
+- Arquivos para testar funções ou novos comandos
+
+
+Versões para apromoramento em 1.1
+- Arquivos para melhorar desempenho das leituras
