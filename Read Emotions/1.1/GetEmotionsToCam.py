@@ -88,7 +88,7 @@ while(True):
         #Previsões, classifica as emoçoes
         preds = classificador_emocoes.predict(roi)[0]
 
-        if len(faces) == 1:
+        '''if len(faces) == 1:
             #Qtdfaces = 1
             for (index, (emotion, prob)) in enumerate(zip(expressoes, preds)):
                 # nomes das emoções
@@ -99,7 +99,7 @@ while(True):
                     barra = espaco_esquerda + 1
                 #mostra quadro com porcentagens de emoções
                 cv2.rectangle(original, (espaco_esquerda, (index * 18) + 7), (barra, (index * 18) + 18), (200, 250, 20), -1)
-                cv2.putText(original, text, (15, (index * 18) + 15), cv2.FONT_HERSHEY_SIMPLEX, 0.25, (255, 255, 255), 1, cv2.LINE_AA)
+                cv2.putText(original, text, (15, (index * 18) + 15), cv2.FONT_HERSHEY_SIMPLEX, 0.25, (255, 255, 255), 1, cv2.LINE_AA)'''
                 #table = cv2.rectangle(frame, (espaco_esquerda, (index * 18) + 7), (barra, (index * 18) + 18), (200, 250, 20), -1)
                 #cv2.putText(frame, text, (15, (index * 18) + 15), cv2.FONT_HERSHEY_SIMPLEX, 0.25, (0, 0, 0), 1, cv2.LINE_AA)
                 #table = cv2.imshow('table', table)
