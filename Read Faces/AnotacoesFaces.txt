@@ -1,0 +1,18 @@
+Links para codigos do caffe
+https://github.com/gopinath-balu/computer_vision
+
+https://github.com/sr6033/face-detection-with-OpenCV-and-DNN
+
+https://github.com/eveningglow/age-and-gender-classification/tree/master/model
+
+https://github.com/GilLevi/AgeGenderDeepLearning/blob/master/models/age_net.caffemodel
+
+na pasta 1.0
+Arquivo GenderDetect funciona mas nao 100% de acertividade para o sexo
+(desenvolver melhorias ainda)
+
+Arquivo AgeDetect funciona mas nao 100% tambem, idades nao batem
+(desenvolver melhorias ainda)
+
+na pasta 1.1
+Arquivo GenderDetect inicio do desenvolvimento para detecção do rosto usando haarcascade_frontalface_default para extrair ROIs das imagens e realizar tratamentos 
