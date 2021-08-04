@@ -1,4 +1,4 @@
-#faz leitura das emoções pela foto
+#faz leitura das emoções pela camera
 import numpy as np
 import pandas as pd
 import zipfile
@@ -20,11 +20,6 @@ import argparse
 cascade_faces = "../../Testing Faces/haarcascade_frontalface_default.xml"
 face_detection = cv2.CascadeClassifier(cascade_faces)
 
-parser = argparse.ArgumentParser()
-parser.add_argument('--image')
-
-args = parser.parse_args()
-
 #carrega modelos para detecção
 faceProto    = "../Models/opencv_face_detector.pbtxt"
 faceModel    = "../Models/opencv_face_detector_uint8.pb"
@@ -34,72 +29,78 @@ genderProto  = "../Models/gender_deploy.prototxt"
 genderModel  = "../Models/gender_net.caffemodel"
 
 MODEL_MEAN_VALUES=(78.4263377603, 87.7689143744, 114.895847746)
-genderList=['Masculino','Feminino']
+faceNet = cv2.dnn.readNet(faceModel,faceProto)
+genderNet = cv2.dnn.readNet(genderModel,genderProto)
 
-genderNet=cv2.dnn.readNet(genderModel,genderProto)
-faceNet=cv2.dnn.readNet(faceModel,faceProto)
+genderList = ['Masculino','Feminino']
 
-#carrega a imagem
-video = cv2.VideoCapture(args.image if args.image else 0)
+# define a video capture object
+video = cv2.VideoCapture(0)
+
+def highlightFace(net, frame, conf_threshold=0.7):
+	#frame = frame.copy()
+	h = frame.shape[0]
+	w = frame.shape[1]
+
+	blob = cv2.dnn.blobFromImage(frame, 1.0, (300, 300), [104, 117, 123], True, False)
+
+	net.setInput(blob)
+	detections=net.forward()
+	faceBoxes=[]
+	for i in range(detections.shape[2]):
+		confidence=detections[0,0,i,2]
+		if confidence>conf_threshold:
+			x1 = int(detections[0,0,i,3] * w)
+			y1 = int(detections[0,0,i,4] * h)
+			x2 = int(detections[0,0,i,5] * w)
+			y2 = int(detections[0,0,i,6] * h)
+			faceBoxes.append([x1,y1,x2,y2])
+			#cv2.rectangle(frame, (x1,y1), (x2,y2), (0,255,0), int(round(frame/150)), 8)
+	
+	return frame, faceBoxes
+
 padding = 20
 
-while True:
+while(True):
 	ret, frame = video.read()
 	frame = cv2.flip(frame,1)
 	faces = face_detection.detectMultiScale(frame, scaleFactor = 1.2, minNeighbors = 5, minSize = (30,30))
-
-	#frame_cinza = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
-	#original = frame.copy()
-
-	for (x, y, w, h) in faces:
-
-		roi = frame[y:y + h, x:x + w]
-		roi = cv2.resize(roi, (48, 48))
-		cv2.imshow('Camera', roi)
-
-		roi = roi.astype('float') / 255
-		roi = img_to_array(roi)
-		roi = np.expand_dims(roi, axis = 0)
-
-
-		#print(x, y, w, h)
-
-'''def highlightFace(net, frame, conf_threshold=0.7):
-	faceBoxes = None
 	
 	original = frame.copy()
-	frameHeight = original.shape[0]
-	frameWidth = original.shape[1]
-
-	frame_cinza = cv2.cvtColor(original, cv2.COLOR_BGR2GRAY)
-
+	#frame, faceBoxes=highlightFace(faceNet,frame)
 	for (x, y, w, h) in faces:
-		roi = frame_cinza[y:y + h, x:x + w]
+		roi = frame[y:y + h, x:x + w]
 		roi = cv2.resize(roi, (48, 48))
-		
+		#cv2.imshow('roi', roi)
+
 		roi = roi.astype('float') / 255
 		roi = img_to_array(roi)
 		roi = np.expand_dims(roi, axis = 0)
-		cv2.imshow("Img", roi)
-
-
-	return original, faceBoxes
-
-while cv2.waitKey(1) < 0:
-	hasFrame, frame = video.read()
-	faces = face_detection.detectMultiScale(frame, scaleFactor = 1.2, minNeighbors = 5, minSize = (30,30))
-
-	frame_cinza = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
-	for (x, y, w, h) in faces:
-		roi = frame_cinza[y:y + h, x:x + w]
-		roi = cv2.resize(roi, (48, 48))
 		
-		roi = roi.astype('float') / 255
-		roi = img_to_array(roi)
-		roi = np.expand_dims(roi, axis = 0)
-	
-	cv2.imshow("Img", roi)'''
+		original, faceBoxes = highlightFace(faceNet, frame)
 
-	#resultImg, faceBoxes = highlightFace(faceNet, faces)
+		for faceBox in faceBoxes:
+			face=frame[max(0,faceBox[1]-padding):min(faceBox[3]+padding,frame.shape[0]-1),max(0,faceBox[0]-padding):min(faceBox[2]+padding, frame.shape[1]-1)]
+			
+		blob=cv2.dnn.blobFromImage(face, 1.0, (227,227), MODEL_MEAN_VALUES, swapRB=False)
+        
+        #faz previsões para definir o genero
+		genderNet.setInput(blob)
+		
+		genderPreds = genderNet.forward()
+        #print(f'genderPreds {genderPreds}')
+		gender = genderList[genderPreds[0].argmax()]
+
+		cv2.putText(original, gender, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.65, (0,0,255), 2, cv2.LINE_AA)
+		cv2.rectangle(original, (x,y), (x + w, y + h), (255,0,0), 2 )
+
+	cv2.imshow('Camera', original)
+    
+    
+	if cv2.waitKey(1) & 0xFF == ord('q'):
+		break
+  
+# After the loop release the cap object
+video.release()
+# Destroy all the windows
+cv2.destroyAllWindows()
