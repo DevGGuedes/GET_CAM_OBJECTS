@@ -5,12 +5,14 @@ mp_drawing_styles = mp.solutions.drawing_styles
 mp_hands = mp.solutions.hands
 
 # For static images:
+#IMAGE_FILES = ['../Images/A.JPG']
 IMAGE_FILES = []
 with mp_hands.Hands(
     static_image_mode=True,
     max_num_hands=2,
     min_detection_confidence=0.5) as hands:
   for idx, file in enumerate(IMAGE_FILES):
+    print(IMAGE_FILES)
     # Read an image, flip it around y-axis for correct handedness output (see
     # above).
     image = cv2.flip(cv2.imread(file), 1)
@@ -53,6 +55,7 @@ with mp_hands.Hands(
 
     # Flip the image horizontally for a later selfie-view display, and convert
     # the BGR image to RGB.
+    
     image = cv2.cvtColor(cv2.flip(image, 1), cv2.COLOR_BGR2RGB)
     # To improve performance, optionally mark the image as not writeable to
     # pass by reference.
@@ -70,7 +73,11 @@ with mp_hands.Hands(
             mp_hands.HAND_CONNECTIONS,
             mp_drawing_styles.get_default_hand_landmarks_style(),
             mp_drawing_styles.get_default_hand_connections_style())
-    cv2.imshow('MediaPipe Hands', image)
-    if cv2.waitKey(5) & 0xFF == 27:
-      break
+    
+    cv2.imshow('Camera', image)
+    #if cv2.waitKey(5) & 0xFF == 27:
+    #  break
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
 cap.release()
